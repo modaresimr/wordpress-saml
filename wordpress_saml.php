@@ -86,8 +86,11 @@ if (isset($_GET['saml_sso'])) {
 } else {
 	$execute_sso = false;
 	$saml_actions = isset($_GET['saml_metadata']) || (strpos($_SERVER['SCRIPT_NAME'], 'alternative_acs.php') !== FALSE);
-
-	$wp_login_page = (strpos($_SERVER['SCRIPT_NAME'], 'wp-login.php') !== FALSE) && $action == 'login' && !isset($_GET['loggedout']);
+	$login_page = 'wp-login.php';
+	if (is_plugin_active('wps-hide-login/wps-hide-login.php')) {
+		$login_page = str_replace('wp-login.php', get_site_option('whl_page', 'login'), $login_page) . '/';
+	}
+	$wp_login_page = (strpos($_SERVER['REQUEST_URI'], $login_page) !== FALSE) && $action == 'login' && !isset($_GET['loggedout']);
 
 	$want_to_local_login = isset($_GET['normal']) || (isset($_POST['log']) && isset($_POST['pwd']));
 	$want_to_reset = $action == 'lostpassword' || $action == 'rp' || $action == 'resetpass' || (isset($_GET['checkemail']) &&  $_GET['checkemail'] == 'confirm');
