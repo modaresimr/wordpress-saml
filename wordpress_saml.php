@@ -15,6 +15,9 @@ if (!function_exists('add_action')) {
 	exit;
 }
 
+if (!function_exists('is_plugin_active')) {
+    include_once(ABSPATH . 'wp-admin/includes/plugin.php');
+}
 // Allow cookie name overriding by defining following constants prior this point. Eg.: in wp-config.php.
 if (false === defined('SAML_LOGIN_COOKIE')) {
 	define('SAML_LOGIN_COOKIE', 'saml_login');
